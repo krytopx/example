@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podcast Player</title>
+  <style>
+    :root {
+      --bg-color-dark: #0e0e11;
+      --text-color-dark: #f2f2f2;
+      --header-bg-dark: #15151c;
+      --player-bg-dark: #1b1b24;
+      --progress-bg-dark: #2d2d3a;
+      --progress-fill-dark: #6f5bff;
+
+      --bg-color-light: #f9f9f9;
+      --text-color-light: #111;
+      --header-bg-light: #ffffff;
+      --player-bg-light: #e5e5e5;
+      --progress-bg-light: #ccc;
+      --progress-fill-light: #6f5bff;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-color-dark);
+      color: var(--text-color-dark);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .header {
+      padding: 20px;
+      background: var(--header-bg-dark);
+      border-bottom: 1px solid #2a2a35;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #aaa;
+      transition: color 0.3s;
+    }
+
+    .toggle-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: var(--progress-fill-dark);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .episode-title {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .episode-desc {
+      font-size: 14px;
+      color: #bbb;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--player-bg-dark);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      transition: background 0.3s;
+    }
+
+    .player button {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: var(--progress-fill-dark);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .progress {
+      flex: 1;
+      height: 6px;
+      background: var(--progress-bg-dark);
+      border-radius: 3px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--progress-fill-dark);
+      transition: width 0.1s, background 0.3s;
+    }
+
+    .time {
+      font-size: 12px;
+      color: #aaa;
+      width: 60px;
+      text-align: right;
+      transition: color 0.3s;
+    }
+
+    .transcript {
+      background: #16161d;
+      padding: 20px;
+      border-radius: 12px;
+      line-height: 1.7;
+      font-size: 15px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #777;
+      transition: color 0.3s;
+    }
+
+    body.light-mode {
+      background: var(--bg-color-light);
+      color: var(--text-color-light);
+    }
+
+    body.light-mode .header {
+      background: var(--header-bg-light);
+    }
+
+    body.light-mode .header p,
+    body.light-mode .episode-desc,
+    body.light-mode .time {
+      color: #555;
+    }
+
+    body.light-mode .player {
+      background: var(--player-bg-light);
+    }
+
+    body.light-mode .player button {
+      background: var(--progress-fill-light);
+    }
+
+    body.light-mode .progress {
+      background: var(--progress-bg-light);
+    }
+
+    body.light-mode .progress span {
+      background: var(--progress-fill-light);
+    }
+
+    body.light-mode .transcript {
+      background: #f0f0f0;
+      color: #111;
+    }
+
+    body.light-mode .toggle-btn {
+      background: var(--progress-fill-light);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>(Text EX.)
+      </h1>
+      <p>(Text EX.)</p>
+    </div>
+    <button class="toggle-btn" id="toggleMode">🌞 Light Mode</button>
+  </div>
+
+  <div class="container">
+    <div class="episode-title">(TEXT EX.)</div>
+    <div class="episode-desc">(TEXT EX.)</div>
+
+    <audio id="audio" src="episode1.mp3"></audio>
+
+    <div class="player">
+      <button id="rewindBtn">⏮</button>
+      <button id="playBtn">▶</button>
+      <button id="forwardBtn">⏭</button>
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="time" id="time">00:00</div>
+    </div>
+
+    <div class="transcript">
+      <p>TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST</p>
+    </div>
+  </div>
+
+  <div class="footer">by @Group 2</div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const audio = document.getElementById("audio");
+      const playBtn = document.getElementById("playBtn");
+      const rewindBtn = document.getElementById("rewindBtn");
+      const forwardBtn = document.getElementById("forwardBtn");
+      const progressBarContainer = document.querySelector(".progress");
+      const progressBar = document.getElementById("progressBar");
+      const time = document.getElementById("time");
+      const toggleBtn = document.getElementById("toggleMode");
+      const body = document.body;
+
+      
+      playBtn.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = "▐▐";
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶";
+        }
+      });
+
+   
+      rewindBtn.addEventListener("click", () => {
+        audio.currentTime = Math.max(0, audio.currentTime - 10);
+      });
+
+     
+      forwardBtn.addEventListener("click", () => {
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+      });
+
+      progressBarContainer.addEventListener("click", (e) => {
+        const rect = progressBarContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        const percent = clickX / width;
+        audio.currentTime = percent * audio.duration;
+      });
+
+      
+      audio.addEventListener("timeupdate", () => {
+        if(audio.duration){
+          const percent = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = percent + "%";
+        }
+        const minutes = Math.floor(audio.currentTime / 60);
+        const seconds = Math.floor(audio.currentTime % 60);
+        time.textContent = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+      });
+
+      
+      audio.addEventListener("ended", () => {
+        playBtn.textContent = "▶";
+      });
+
+     
+      toggleBtn.addEventListener("click", () => {
+        body.classList.toggle("light-mode");
+        if(body.classList.contains("light-mode")) {
+          toggleBtn.textContent = "🌙 Dark Mode";
+        } else {
+          toggleBtn.textContent = "🌞 Light Mode";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
