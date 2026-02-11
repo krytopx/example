@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>(TEST)</title>
+  <title>TEST</title>
   <style>
     :root {
       --bg-color-dark: #0e0e11;
@@ -41,22 +41,23 @@
 
     .header h1 {
       margin: 0;
-      font-size: 22px;
+      font-size: 24px;
     }
 
     .header p {
       margin: 6px 0 0;
-      font-size: 13px;
+      font-size: 14px;
       color: #aaa;
       transition: color 0.3s;
     }
 
     .toggle-btn {
-      padding: 6px 12px;
+      padding: 8px 14px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       background: var(--progress-fill-dark);
       color: #fff;
+      font-size: 14px;
       cursor: pointer;
       transition: background 0.3s;
     }
@@ -68,8 +69,250 @@
     }
 
     .episode-title {
-      font-size: 24px;
-      margin-bottom: 6px;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .episode-desc {
+      font-size: 16px;
+      color: #bbb;
+      margin-bottom: 24px;
+      transition: color 0.3s;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--player-bg-dark);
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      transition: background 0.3s;
+    }
+
+    .player button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      background: var(--progress-fill-dark);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .progress {
+      flex: 1;
+      height: 12px;
+      background: var(--progress-bg-dark);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--progress-fill-dark);
+      transition: width 0.1s, background 0.3s;
+    }
+
+    .time {
+      font-size: 14px;
+      color: #aaa;
+      width: 60px;
+      text-align: right;
+      transition: color 0.3s;
+    }
+
+    .transcript {
+      background: #16161d;
+      padding: 24px;
+      border-radius: 16px;
+      line-height: 1.8;
+      font-size: 16px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #777;
+      transition: color 0.3s;
+    }
+
+    body.light-mode {
+      background: var(--bg-color-light);
+      color: var(--text-color-light);
+    }
+
+    body.light-mode .header {
+      background: var(--header-bg-light);
+    }
+
+    body.light-mode .header p,
+    body.light-mode .episode-desc,
+    body.light-mode .time {
+      color: #555;
+    }
+
+    body.light-mode .player {
+      background: var(--player-bg-light);
+    }
+
+    body.light-mode .player button {
+      background: var(--progress-fill-light);
+    }
+
+    body.light-mode .progress {
+      background: var(--progress-bg-light);
+    }
+
+    body.light-mode .progress span {
+      background: var(--progress-fill-light);
+    }
+
+    body.light-mode .transcript {
+      background: #f0f0f0;
+      color: #111;
+    }
+
+    body.light-mode .toggle-btn {
+      background: var(--progress-fill-light);
+      color: white;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .player {
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .player button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .episode-title {
+        font-size: 22px;
+      }
+
+      .episode-desc, .time {
+        font-size: 14px;
+      }
+
+      .transcript {
+        font-size: 15px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>TEST</h1>
+      <p>TEST</p>
+    </div>
+    <button class="toggle-btn" id="toggleMode">🌞 Light Mode</button>
+  </div>
+
+  <div class="container">
+    <div class="episode-title">TEST</div>
+    <div class="episode-desc">TEST</div>
+
+    <audio id="audio" src="episode1.mp3"></audio>
+
+    <div class="player">
+      <button id="rewindBtn">⏮</button>
+      <button id="playBtn">▶</button>
+      <button id="forwardBtn">⏭</button>
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="time" id="time">00:00</div>
+    </div>
+
+    <div class="transcript">
+      <p>TEST TEST TEST</p>
+    </div>
+  </div>
+
+  <div class="footer">by @Group 2</div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const audio = document.getElementById("audio");
+      const playBtn = document.getElementById("playBtn");
+      const rewindBtn = document.getElementById("rewindBtn");
+      const forwardBtn = document.getElementById("forwardBtn");
+      const progressBarContainer = document.querySelector(".progress");
+      const progressBar = document.getElementById("progressBar");
+      const time = document.getElementById("time");
+      const toggleBtn = document.getElementById("toggleMode");
+      const body = document.body;
+
+      playBtn.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = "▐▐";
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶";
+        }
+      });
+
+      
+      rewindBtn.addEventListener("click", () => {
+        audio.currentTime = Math.max(0, audio.currentTime - 10);
+      });
+
+      
+      forwardBtn.addEventListener("click", () => {
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+      });
+
+      
+      progressBarContainer.addEventListener("click", (e) => {
+        const rect = progressBarContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        const percent = clickX / width;
+        audio.currentTime = percent * audio.duration;
+      });
+
+      
+      audio.addEventListener("timeupdate", () => {
+        if(audio.duration){
+          const percent = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = percent + "%";
+        }
+        const minutes = Math.floor(audio.currentTime / 60);
+        const seconds = Math.floor(audio.currentTime % 60);
+        time.textContent = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+      });
+
+
+      audio.addEventListener("ended", () => {
+        playBtn.textContent = "▶";
+      });
+
+      
+      toggleBtn.addEventListener("click", () => {
+        body.classList.toggle("light-mode");
+        toggleBtn.textContent = body.classList.contains("light-mode") ? "🌙 Dark Mode" : "🌞 Light Mode";
+      });
+    });
+  </script>
+
+</body>
+</html>      margin-bottom: 6px;
     }
 
     .episode-desc {
